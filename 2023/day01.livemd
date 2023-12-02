@@ -2,28 +2,19 @@
 
 ```elixir
 Mix.install([
-  {:smaoc, git: "https://github.com/nettinho/smaoc"}
+  # {:smaoc, git: "https://github.com/nettinho/smaoc"}
+  {:kino, "~> 0.11"}
 ])
 ```
 
-## Section
-
+## Common
 
 ```elixir
-defmodule Smaoc.Solution do
+defmodule Aoc do
   defp parse_input(input) do
     input |> String.split("\n", trim: true)
   end
 
-  # Example
-  # 
-  # 1abc2
-  # pqr3stu8vwx
-  # a1b2c3d4e5f
-  # treb7uchet
-  # 
-  # In this example, the calibration values of these four lines are 12, 38, 15, and 77.
-  # Adding these together produces 142.
   def solve(:part1, input) do
     parse_input(input)
     |> Enum.map(fn line ->
@@ -42,18 +33,6 @@ defmodule Smaoc.Solution do
     |> dbg()
   end
 
-  # Example
-  #
-  # two1nine
-  # eightwothree
-  # abcone2threexyz
-  # xtwone3four
-  # 4nineeightseven2
-  # zoneight234
-  # 7pqrstsixteen
-  #
-  # In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76.
-  # Adding these together produces 281.
   def solve(:part2, input) do
     digits = ~w(one two three four five six seven eight nine)
     r = ~r/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/
@@ -84,29 +63,34 @@ defmodule Smaoc.Solution do
     |> dbg()
   end
 end
-
-year = "2023"
-day = "1"
-run_config = ["example", "part1"]
-
-inputs = %{
-  "puzzle" => "",
-  "example" => "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet"
-}
-
-response =
-  for part <- ["part1", "part2"], input_key <- ["puzzle", "example"] do
-    {part, input_key}
-  end
-
-response =
-  response
-  |> Enum.filter(fn {part, input_key} ->
-    part in run_config and input_key in run_config
-  end)
-  |> Enum.map(fn {part, input_key} ->
-    [part, input_key, Smaoc.Solution.solve(String.to_atom(part), inputs[input_key])]
-  end)
-
-Smaoc.Response.new(%{response: response, run_config: run_config, year: year, day: day})
 ```
+
+## Part 1
+
+```elixir
+input_1 = Kino.Input.textarea("input:")
+```
+
+In this example, the calibration values of these four lines are 12, 38, 15, and 77.
+
+Adding these together produces 142.
+
+```elixir
+Aoc.solve(:part1, Kino.Input.read(input_1))
+```
+
+## Part 2
+
+```elixir
+input_2 = Kino.Input.textarea("input:")
+```
+
+In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76.
+
+Adding these together produces 281.
+
+```elixir
+Aoc.solve(:part2, Kino.Input.read(input_2))
+```
+
+<!-- livebook:{"offset":1832,"stamp":{"token":"XCP.vazMs0NZX_kJ7gnc4BBFwgXHL7aZijXyVf1GM0NLikuY5GFEMR-skwCMugrw450OJpdTyz6hWWVYQci5Yj5_7gJfqMZy-SsbqIhMO20Tm8OUrgYVako","version":2}} -->
