@@ -2,8 +2,7 @@
 
 ```elixir
 Mix.install([
-  # {:smaoc, git: "https://github.com/nettinho/smaoc"}
-  {:kino, "~> 0.11"}
+  {:kino, "~> 0.11.3"}
 ])
 ```
 
@@ -71,10 +70,6 @@ end
 input_1 = Kino.Input.textarea("input:")
 ```
 
-In this example, the calibration values of these four lines are 12, 38, 15, and 77.
-
-Adding these together produces 142.
-
 ```elixir
 Aoc.solve(:part1, Kino.Input.read(input_1))
 ```
@@ -85,12 +80,8 @@ Aoc.solve(:part1, Kino.Input.read(input_1))
 input_2 = Kino.Input.textarea("input:")
 ```
 
-In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76.
-
-Adding these together produces 281.
-
 ```elixir
 Aoc.solve(:part2, Kino.Input.read(input_2))
 ```
 
-<!-- livebook:{"offset":1832,"stamp":{"token":"XCP.vazMs0NZX_kJ7gnc4BBFwgXHL7aZijXyVf1GM0NLikuY5GFEMR-skwCMugrw450OJpdTyz6hWWVYQci5Yj5_7gJfqMZy-SsbqIhMO20Tm8OUrgYVako","version":2}} -->
+<!-- livebook:{"offset":1543,"stamp":{"token":"XCP.EvM8w4Zy7xp0WP-NbgZYlAjWnM-jDL3VL5PHdV4g4Xp9WU81bdYa5iovPDM_KSZL9ll3BWy_ZZ6h_SJRI48muzwsv0n3Ibx10ukyIMw0zRkK1FFxAN4","version":2}} -->
