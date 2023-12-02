@@ -2,11 +2,11 @@
 
 ```elixir
 Mix.install([
-  {:smaoc, git: "https://github.com/nettinho/smaoc"}
+  {:kino, "~> 0.11.3"}
 ])
 ```
 
-## Section
+## Common
 
 ```elixir
 defmodule Model do
@@ -43,7 +43,7 @@ defmodule Model do
   end
 end
 
-defmodule Smaoc.Solution do
+defmodule Aoc do
   alias Model.Set
   alias Model.Game
 
@@ -89,30 +89,26 @@ defmodule Smaoc.Solution do
     |> dbg()
   end
 end
-
-year = "2023"
-day = "2"
-run_config = ["example", "part1"]
-
-inputs = %{
-  "puzzle" => "",
-  "example" =>
-    "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green\nGame 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue\nGame 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red\nGame 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red\nGame 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
-}
-
-response =
-  for part <- ["part1", "part2"], input_key <- ["puzzle", "example"] do
-    {part, input_key}
-  end
-
-response =
-  response
-  |> Enum.filter(fn {part, input_key} ->
-    part in run_config and input_key in run_config
-  end)
-  |> Enum.map(fn {part, input_key} ->
-    [part, input_key, Smaoc.Solution.solve(String.to_atom(part), inputs[input_key])]
-  end)
-
-Smaoc.Response.new(%{response: response, run_config: run_config, year: year, day: day})
 ```
+
+## Part 1
+
+```elixir
+input_1 = Kino.Input.textarea("input:")
+```
+
+```elixir
+Aoc.solve(:part1, Kino.Input.read(input_1))
+```
+
+## Part 2
+
+```elixir
+input_2 = Kino.Input.textarea("input:")
+```
+
+```elixir
+Aoc.solve(:part2, Kino.Input.read(input_2))
+```
+
+<!-- livebook:{"offset":2165,"stamp":{"token":"XCP.tuzY9cgK4MYe-9AzjSyvN57MQSS2v1-D4EeQ5Mfizd66uT9ytJouA5cEA8_SQwB3i_QeCCQ2mAUxayFCY3eQKbJjqay6wbStv9uPLGk4xHm_h9x1x94","version":2}} -->
