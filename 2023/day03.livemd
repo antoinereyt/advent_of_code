@@ -1,0 +1,150 @@
+# AOC 2023 - Day 03
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.11.3"}
+])
+```
+
+## Common
+
+```elixir
+defmodule Model.Board do
+  defstruct grid: %{}, rows: nil, cols: nil
+end
+
+defmodule Model.Number do
+  defstruct int: nil, x: nil, y: nil, length: nil
+
+  @spec new(int :: non_neg_integer(), x :: non_neg_integer(), y :: non_neg_integer()) ::
+          %Model.Number{}
+  def new(int, x, y) do
+    %Model.Number{
+      x: x,
+      y: y,
+      int: int,
+      length: int |> to_string() |> String.length()
+    }
+  end
+
+  def adjacents(%Model.Board{} = board, %Model.Number{} = number) do
+    xs = Range.new(max(0, number.x - 1), min(board.cols - 1, number.x + number.length))
+    ys = Range.new(max(0, number.y - 1), min(board.rows - 1, number.y + 1))
+
+    exclude =
+      for x <- Range.new(number.x, number.x + number.length - 1) do
+        {x, number.y}
+      end
+
+    for x <- xs, y <- ys, {x, y} not in exclude do
+      {x, y}
+    end
+    |> Enum.map(fn cell ->
+      {cell, Map.get(board.grid, cell)}
+    end)
+    |> Enum.filter(fn {_cell, value} ->
+      value not in ["."]
+    end)
+  end
+
+  def adjacent?(%Model.Board{} = board, %Model.Number{} = number) do
+    adjacents(board, number) |> length() > 0
+  end
+end
+
+defmodule Aoc do
+  def parse_input(input) do
+    %{
+      board: parse_input_board(input),
+      numbers: parse_input_numbers(input)
+    }
+  end
+
+  defp parse_input_numbers(input) do
+    input
+    |> String.split("\n", trim: true)
+    |> Enum.with_index()
+    |> Enum.map(fn {line, y} ->
+      Enum.zip(
+        Regex.scan(~r/\d+/, line),
+        Regex.scan(~r/\d+/, line, return: :index)
+      )
+      |> Enum.map(fn {[int], [{x, _len}]} ->
+        Model.Number.new(int, x, y)
+      end)
+    end)
+    |> List.flatten()
+  end
+
+  defp parse_input_board(input) do
+    [first_line | _] = lines = input |> String.split("\n", trim: true)
+
+    grid =
+      lines
+      |> Enum.with_index()
+      |> Enum.flat_map(fn {line, y} ->
+        String.graphemes(line)
+        |> Enum.with_index()
+        |> Enum.map(fn {cell, x} ->
+          {{x, y}, cell}
+        end)
+      end)
+      |> Map.new()
+
+    %Model.Board{
+      grid: grid,
+      rows: lines |> length(),
+      cols: first_line |> String.graphemes() |> length()
+    }
+  end
+
+  def solve(:part1, input) do
+    %{board: board, numbers: numbers} = parse_input(input)
+
+    numbers
+    |> Enum.filter(fn number -> Model.Number.adjacent?(board, number) end)
+    |> Enum.map(&(&1.int |> String.to_integer()))
+    |> Enum.sum()
+    |> dbg()
+  end
+
+  def solve(:part2, input) do
+    %{board: board, numbers: numbers} = parse_input(input)
+
+    for n <- numbers do
+      for a <- Model.Number.adjacents(board, n) do
+        {a, n.int |> String.to_integer()}
+      end
+    end
+    |> List.flatten()
+    |> Enum.filter(fn {{_cell, symbol}, _} -> symbol == "*" end)
+    |> Enum.group_by(&elem(&1, 0))
+    |> Enum.filter(fn {_k, v} -> length(v) == 2 end)
+    |> Enum.map(fn {_k, v} ->
+      v |> Enum.map(&elem(&1, 1)) |> Enum.product()
+    end)
+    |> Enum.sum()
+    |> dbg()
+  end
+end
+```
+
+## Part 1
+
+```elixir
+input_1 = Kino.Input.textarea("input:")
+```
+
+```elixir
+Aoc.solve(:part1, Kino.Input.read(input_1))
+```
+
+## Part 2
+
+```elixir
+input_2 = Kino.Input.textarea("input:")
+```
+
+```elixir
+Aoc.solve(:part2, Kino.Input.read(input_2))
+```
